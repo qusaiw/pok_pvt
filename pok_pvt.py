@@ -35,7 +35,9 @@ def combinations(pvt_list):
     pvt_name = re.compile(r'([a-z]+)(\d+p\d+v)(n?\d+c)')
 
     # translates floating number to the format the input voltage is written in (i0p25v)
-    def float_to_string(f): return '_i' + str(f).replace('.', 'p') + 'v'
+    def float_to_string(f):
+        return '_i' + str(f).replace('.', 'p') + 'v'
+
     for pvt in pvt_list:
         # parts is a list that contains the process, voltage and temperature in that order
         parts = pvt_name.search(pvt).groups()
@@ -54,7 +56,7 @@ def combinations(pvt_list):
         for n, pvt in enumerate(groups[group]):
             new_groups.extend([pvt[0], 'pg_' + pvt[0], 'ulvl_' + pvt[0], 'dlvl_' + pvt[0]])
             # now that the PVTs are sorted, dlvl with input voltage gets all the voltages of the latter PVTs
-            dlvl_i = [('dlvl_' + pvt[0] + float_to_string(i[1])) for i in groups[group][n+1:]]
+            dlvl_i = [('dlvl_' + pvt[0] + float_to_string(i[1])) for i in groups[group][n + 1:]]
             # ulvl here takes the input voltages from all the ones lower than the one we're at
             ulvl_i = [('ulvl_' + pvt[0] + float_to_string(i[1])) for i in groups[group][:n]]
             new_groups.extend(dlvl_i + ulvl_i)
